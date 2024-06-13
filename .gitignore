@@ -1,0 +1,59 @@
+# Eclipse
+.metadata/
+.recommenders/
+
+# Xtext
+**/*-gen/
+**/*generated*/
+
+# Gradle
+build/
+bin/
+.gradle
+gradle.prefs
+gradle.xml
+
+# Hugo
+site/public
+
+# KDE
+.directory
+*.kate-swp
+
+# Idea
+out/
+uiDesigner.xml
+buildProfile/
+*.iml
+.idea/artifacts/
+.idea/copilot/
+.idea/libraries/
+.idea/ktfmt.xml
+.idea/workspace.xml
+.idea/codeStyleSettings.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/jarRepositories.xml
+.idea/dataSources.local.xml
+.idea/libraries-with-intellij-classes.xml
+.idea/runConfigurations.xml
+.idea/shelf
+.idea/checkstyle-idea.xml
+/.idea/kotlinc.xml
+
+# MacOS
+.DS_Store
+
+# Other
+*.cache-main
+*.cache-tests
+**/*.kotlintest*/*
+.kotlintest/
+modules.xml
+scala_compiler.xml
+vcs.xml
+compiler.xml
+misc.xml
+.name
+node_modules/
+.vscode
+.hugo_build.lock

@@ -1,0 +1,76 @@
+variables:
+  port: &port
+    formula: 1313 + seed
+  seed: &seed
+    min: 0
+    max: 3
+    step: 1
+    default: 0
+  layerX: &layerX
+    10
+  layerY: &layerY
+    -10
+  range: &range
+    formula: cloningRange * 1.01
+  cloningRange: &cloningRange
+    formula: 5
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: *range
+
+seeds:
+  scenario: *seed
+  simulation: *seed
+
+layers:
+  - type: BidimensionalGaussianLayer
+    parameters: [*layerX, *layerY, 1000, 5]
+    molecule: successSource
+  - type: BidimensionalGaussianLayer
+    parameters: [*layerY, *layerX, 1000,  5]
+    molecule: localResource
+
+incarnation: collektive
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [it.unibo.collektive.vmc.VMCSourceKt.withSpawning]
+
+deployments:
+  - type: Point
+#    parameters: [*initialNodes, 0, 0, 20, 20]
+    parameters: [0, 0]
+    programs:
+      - *program
+
+    properties:
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
+        parameters: [ 1000 ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
+        parameters: [ 100 ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+        parameters: [ 6.0 ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
+        parameters: [ 1000 ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
+        parameters: [ *cloningRange ]
+
+launcher:
+  type: MonitorLauncher
+  parameters:
+    host: localhost
+    port: 9090
+    batch: [seed]
+    autoStart: false
+
+monitors:
+  type: GraphQLMonitor
+  parameters:
+    host: localhost
+    port: *port
