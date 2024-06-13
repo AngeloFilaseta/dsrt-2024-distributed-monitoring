@@ -4,6 +4,7 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 from matplotlib.pyplot import figure
+import sys
 
 figure(figsize=(10, 6))
 
@@ -11,7 +12,7 @@ figure(figsize=(10, 6))
 sns.set_theme()
 
 # Load the CSV file
-directory = "responseSizeResults"
+directory = sys.argv[0]
 
 dataframes = []
 

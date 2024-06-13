@@ -5,6 +5,8 @@ import os
 import re
 import matplotlib.ticker as ticker
 from matplotlib.ticker import ScalarFormatter
+import sys
+
 
 pattern = (r'#\s*seed\s*=\s*([0-9]*\.?[0-9]+),\s*frequency\s*=\s*([0-9]*\.?[0-9]+),\s*artificialSlowDown\s*=\s*(['
            r'0-9]*\.?[0-9]+)')
@@ -45,7 +47,7 @@ def custom_formatter(x, pos):
 sns.set_theme()
 
 # Load the CSV file
-directory = "luupResults"
+directory = sys.argv[0]
 # List to store individual DataFrames
 dataframes = []
 
