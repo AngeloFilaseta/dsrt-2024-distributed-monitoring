@@ -1,7 +1,7 @@
 variables:
   seed: &seed
     min: 0
-    max: 19
+    max: 10
     step: 1
     default: 0
   frequency: &frequency
