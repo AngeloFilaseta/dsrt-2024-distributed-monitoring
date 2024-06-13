@@ -5,10 +5,12 @@ This project requires a Java 17 or higher version.
 If you have no Java installed,
 it is recommended to install the latest LTS Java from AdoptOpenJDK (unless a new LTS is out and Gradle does not yet support it).
 
-## Experiments Execution
-Before proceeding with the experiments,
-note that ports from `1313` to `1412` should be available,
-along with the port `9090`.
+## Experiments
+Before proceeding with the experiments: 
+- local ports from `1313` to `1412` should be available, along with the port `9090`;
+- install the version of Python indicated in `.python-version` (or use [pyenv](https://github.com/pyenv/pyenv));
+- Upgrade pip to the latest version: `pip install --upgrade pip`;
+- Install the requirements: `pip install -r requirements.txt`.
 
 First of all clone the repository and navigate to the project directory:
 
@@ -18,6 +20,11 @@ cd dsrt-2024-distributed-monitoring
 ```
 
 Some Gradle tasks will be available for each experiment.
+
+The experiments were originally executed on the following machine:
+- CPU: Intel(R) Core(TM) i7-8700T CPU @ 2.40GHz
+- RAM: 16GiB System memory
+- OS: Manjaro Linux
 
 ### Viability
 
@@ -53,11 +60,19 @@ To execute the experiment highlighting the *Scalability* goal, run the following
 gradlew.bat runOneRootResponseSizeExperiment # Windows
 ```
 
-The required time for completion was estimated to be around 1 hour and 30 minutes on the following machine:
+The required time for completion was estimated to be around 1 hour and 30 minutes on the machine described in [Experiments](#experiments).
 
-- CPU: Intel(R) Core(TM) i7-8700T CPU @ 2.40GHz
-- RAM: 16GiB System memory
-- OS: Manjaro Linux
+Raw metrics will be available in the `evaluation/oneRootResponseSize` directory.
+It is possible to generate the plot by running the following command:
+```shell
+python evaluation/scalability.py evaluation/oneRootResponseSize
+```
+
+If you want to re-generate the plots using the available data, run the following command instead:
+
+```shell
+python evaluation/scalability.py evaluation/oneRootResponseSize_presaved
+```
 
 ### Efficiency
 
@@ -70,8 +85,16 @@ gradlew.bat runOneRootLostUpdateUselessPollingExperiment # Windows
 
 **WARNING**: This experiments takes a long time to complete.
 
-The required time for completion was estimated to be around 1 hour and 30 minutes on the following machine:
+The required time for completion was estimated to be around 1 hour and 30 minutes on the machine described in [Experiments](#experiments).
 
-- CPU: Intel(R) Core(TM) i7-8700T CPU @ 2.40GHz
-- RAM: 16GiB System memory
-- OS: Manjaro Linux
+Raw metrics will be available in the `evaluation/oneRootLostUpdateUselessPolling` directory.
+It is possible to generate the plot by running the following command:
+```shell
+python evaluation/efficiency.py evaluation/oneRootLostUpdateUselessPolling
+```
+
+If you want to re-generate the plots using the available data, run the following command instead:
+
+```shell
+python evaluation/efficiency.py evaluation/oneRootLostUpdateUselessPolling_presaved
+```
