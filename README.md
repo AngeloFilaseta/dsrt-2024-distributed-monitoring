@@ -14,7 +14,7 @@ Before proceeding with the experiments:
 
 First of all clone the repository and navigate to the project directory:
 
-```shell
+```console
 git clone https://github.com/AngeloFilaseta/dsrt-2024-distributed-monitoring.git
 cd dsrt-2024-distributed-monitoring
 ```
@@ -30,7 +30,7 @@ The experiments were originally executed on the following machine:
 
 To execute the experiment highlighting the *Viability* goal, run the following command:
 
-```shell
+```console
 ./gradlew runOneRootMonitorExperiment # UNIX & Bash Emulators
 gradlew.bat runOneRootMonitorExperiment # Windows
 ```
@@ -55,7 +55,7 @@ aggregated over all clients.
 ### Scalability
 To execute the experiment highlighting the *Scalability* goal, run the following command:
 
-```shell
+```console
 ./gradlew runOneRootResponseSizeExperiment # UNIX & Bash Emulators
 gradlew.bat runOneRootResponseSizeExperiment # Windows
 ```
@@ -64,13 +64,13 @@ The required time for completion was estimated to be around 1 hour and 30 minute
 
 Raw metrics will be available in the `evaluation/oneRootResponseSize` directory.
 It is possible to generate the plot by running the following command:
-```shell
+```console
 python evaluation/scalability.py evaluation/oneRootResponseSize
 ```
 
 If you want to re-generate the plots using the available data, run the following command instead:
 
-```shell
+```console
 python evaluation/scalability.py evaluation/oneRootResponseSize_presaved
 ```
 
@@ -78,7 +78,7 @@ python evaluation/scalability.py evaluation/oneRootResponseSize_presaved
 
 To execute the experiment highlighting the *Scalability* goal, run the following command:
 
-```shell
+```console
 ./gradlew runOneRootLostUpdateUselessPollingExperiment # UNIX & Bash Emulators
 gradlew.bat runOneRootLostUpdateUselessPollingExperiment # Windows
 ```
@@ -89,12 +89,12 @@ The required time for completion was estimated to be around 1 hour and 30 minute
 
 Raw metrics will be available in the `evaluation/oneRootLostUpdateUselessPolling` directory.
 It is possible to generate the plot by running the following command:
-```shell
+```console
 python evaluation/efficiency.py evaluation/oneRootLostUpdateUselessPolling
 ```
 
 If you want to re-generate the plots using the available data, run the following command instead:
 
-```shell
+```console
 python evaluation/efficiency.py evaluation/oneRootLostUpdateUselessPolling_presaved
 ```
