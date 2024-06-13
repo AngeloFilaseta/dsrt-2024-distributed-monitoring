@@ -1,4 +1,11 @@
-# dsrt-2024-distributed-monitoring
+# An Architecture and Prototype for Monitoring Distributed Simulations of Distributed Systems
+Department of Computer Science and Engineering
+Alma Mater Studiorum - Università di Bologna
+Cesena, Italy
+
+- [Angelo Filaseta](https://github.com/AngeloFilaseta) 0009-0004-6797-6814
+- [Danilo Pianini](https://github.com/DanySK) 0000-0002-8392-5409
+- [Angela Cortecchia](https://github.com/angelacorte/vmc-experiments) 0009-0000-3650-7450
 
 ## Requirements
 This project requires a Java 17 or higher version.
