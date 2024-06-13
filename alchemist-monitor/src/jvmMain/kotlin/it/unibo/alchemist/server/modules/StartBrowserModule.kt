@@ -10,16 +10,23 @@
 package it.unibo.alchemist.server.modules
 
 import io.ktor.server.engine.ApplicationEngineEnvironment
+import org.slf4j.LoggerFactory
 import java.awt.Desktop
 import java.net.URI
+
+private val logger = LoggerFactory.getLogger("StartBrowserModule")
 
 /**
  * Start the default browser of the user on the server address.
  */
 fun ApplicationEngineEnvironment.startBrowserModule() {
     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+        logger.warn("It is possible to start a Browser automatically on this Desktop.")
         connectors.forEach {
-            Desktop.getDesktop().browse(URI("${it.type.name.lowercase()}://${it.host}:${it.port}"))
+            val address = "${it.type.name.lowercase()}://${it.host}:${it.port}"
+            Desktop.getDesktop().browse(URI(address))
         }
+    } else {
+        logger.warn("Cannot start a browser automatically on this Desktop.")
     }
 }

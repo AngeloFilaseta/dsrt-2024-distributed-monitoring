@@ -105,10 +105,9 @@ private val App = FC<Props> {
     }
 
     Navbar {
-        addClient = { address, port ->
-            graphQLController = GraphQLController.fromClients(
-                graphQLController.clients + GraphQLClientFactory.subscriptionClient(address, port),
-            )
+        addClient = { clients ->
+            val new = clients.map { client -> GraphQLClientFactory.subscriptionClient(client.first, client.second) }
+            graphQLController = GraphQLController.fromClients(graphQLController.clients + new)
         }
     }
 

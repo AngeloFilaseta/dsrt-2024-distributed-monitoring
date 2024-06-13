@@ -76,5 +76,5 @@ data object General : QueryType {
         return AllSubscription()
     }
 
-    override fun toString(): String = "General"
+    override fun toString(): String = "Baseline"
 }

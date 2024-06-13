@@ -12,5 +12,5 @@ package it.unibo.alchemist.component.props
 import react.Props
 
 external interface AddClientProps : Props {
-    var addClient: (String, Int) -> Unit
+    var addClient: (List<Pair<String, Int>>) -> Unit
 }

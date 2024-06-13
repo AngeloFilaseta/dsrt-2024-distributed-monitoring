@@ -41,10 +41,25 @@ val AddSubscriptionClientForm = FC<AddClientProps>("AddSubscriptionClientForm") 
             onClick = {
                 val port = inputText.split(":").last()
                 val address = inputText.removeSuffix(":$port")
-                props.addClient(address, port.toInt())
+                props.addClient(listOf(address to port.toInt()))
                 inputText = ""
             }
             +"Add client"
+        }
+    }
+    div {
+        className = ClassName("col-4")
+        button {
+            className = ClassName("btn btn-info")
+            onClick = {
+                props.addClient(
+                    listOf(1313, 1314, 1315).map {
+                        "localhost" to it
+                    },
+                )
+                inputText = ""
+            }
+            +"Add All Available Clients"
         }
     }
 }
