@@ -47,7 +47,7 @@ def custom_formatter(x, pos):
 sns.set_theme()
 
 # Load the CSV file
-directory = sys.argv[0]
+directory = ' '.join(sys.argv[1:])
 # List to store individual DataFrames
 dataframes = []
 
@@ -128,5 +128,5 @@ plt.tight_layout(rect=(0.0, 0.0, 1.0, 0.95))
 fig.suptitle(r'\textit{Lost Updates} and \textit{Useless Polling} with different \textit{Event Time Execution}', fontsize=16)
 
 # Save and show
-plt.savefig("luup_grid.pdf")
+plt.savefig("efficiency.pdf")
 plt.show()

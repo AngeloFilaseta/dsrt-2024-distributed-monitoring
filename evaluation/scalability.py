@@ -12,7 +12,7 @@ figure(figsize=(10, 6))
 sns.set_theme()
 
 # Load the CSV file
-directory = sys.argv[0]
+directory = ' '.join(sys.argv[1:])
 
 dataframes = []
 
@@ -77,6 +77,6 @@ ax2.legend(custom_lines, [
 ], loc="lower right")
 
 plt.title('Influence of Node quantity on response size ', fontsize=12)
-plt.savefig("responseSize.pdf")
+plt.savefig("scalability.pdf")
 plt.show()
 plt.clf()
