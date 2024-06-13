@@ -1,7 +1,7 @@
 # An Architecture and Prototype for Monitoring Distributed Simulations of Distributed Systems
-Department of Computer Science and Engineering
-Alma Mater Studiorum - Università di Bologna
-Cesena, Italy
+Department of Computer Science and Engineering,
+Alma Mater Studiorum - Università di Bologna,
+Cesena - Italy
 
 - [Angelo Filaseta](https://github.com/AngeloFilaseta) 0009-0004-6797-6814
 - [Danilo Pianini](https://github.com/DanySK) 0000-0002-8392-5409
@@ -19,7 +19,7 @@ Before proceeding with the experiments:
 - Upgrade pip to the latest version: `pip install --upgrade pip`;
 - Install the requirements: `pip install -r requirements.txt`.
 
-First of all clone the repository and navigate to the project directory:
+First of all, clone the repository and navigate to the project directory:
 
 ```console
 git clone https://github.com/AngeloFilaseta/dsrt-2024-distributed-monitoring.git
