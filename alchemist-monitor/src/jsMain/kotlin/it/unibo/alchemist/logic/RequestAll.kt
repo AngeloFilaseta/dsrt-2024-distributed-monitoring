@@ -35,20 +35,21 @@ object RequestAll {
         mappers: List<DataMapper<*>>,
         subscription: Subscription<*>,
     ) {
-        subscriptionController.subscribe(subscription).mapValues { (client, flow) ->
-            MainScope().launch {
-                flow.collectLatest { response ->
-                    store.dispatch(
-                        Collect(
-                            client,
-                            mappers.map { m ->
-                                m.outputName to m.invoke(response.data as Subscription.Data)
-                            },
-                        ),
-                    )
+        subscriptionController.subscribe(subscription)
+            .mapValues { (client, flow) ->
+                MainScope().launch {
+                    flow.collectLatest { response ->
+                        store.dispatch(
+                            Collect(
+                                client,
+                                mappers.map { m ->
+                                    m.outputName to m.invoke(response.data as Subscription.Data)
+                                },
+                            ),
+                        )
+                    }
                 }
             }
-        }
     }
 
     /**

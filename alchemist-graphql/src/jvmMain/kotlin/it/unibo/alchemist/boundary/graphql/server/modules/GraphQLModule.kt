@@ -9,9 +9,12 @@
 
 package it.unibo.alchemist.boundary.graphql.server.modules
 
+import com.expediagroup.graphql.generator.execution.FunctionDataFetcher
+import com.expediagroup.graphql.generator.execution.SimpleKotlinDataFetcherFactoryProvider
 import com.expediagroup.graphql.generator.hooks.FlowSubscriptionSchemaGeneratorHooks
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
 import com.expediagroup.graphql.server.ktor.GraphQL
+import graphql.schema.DataFetcherFactory
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.jackson.JacksonWebsocketContentConverter
 import io.ktor.server.application.Application
@@ -26,6 +29,9 @@ import it.unibo.alchemist.boundary.graphql.schema.operations.queries.NodeQueries
 import it.unibo.alchemist.boundary.graphql.schema.operations.subscriptions.EnvironmentSubscriptions
 import it.unibo.alchemist.boundary.graphql.schema.operations.subscriptions.NodeSubscriptions
 import it.unibo.alchemist.model.Environment
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
 
 /**
  * Ktor module for enabling GraphQL on server.
@@ -71,9 +77,30 @@ fun Application.graphQLModule(environment: Environment<*, *>) {
             )
             hooks = FlowSubscriptionSchemaGeneratorHooks()
         }
-
         server {
             contextFactory = DefaultKtorGraphQLContextFactory()
         }
+        engine {
+            dataFetcherFactoryProvider = CustomDataFetcherFactoryProvider()
+        }
     }
+}
+
+private class CustomDataFetcherFactoryProvider : SimpleKotlinDataFetcherFactoryProvider() {
+    override fun functionDataFetcherFactory(target: Any?, kClass: KClass<*>, kFunction: KFunction<*>): DataFetcherFactory<Any?> =
+        DataFetcherFactory {
+            CustomFunctionFetcher(
+                target = target,
+                fn = kFunction,
+            )
+        }
+}
+
+private class CustomFunctionFetcher(
+    target: Any?,
+    private val fn: KFunction<*>,
+) : FunctionDataFetcher(target, fn) {
+    override fun runBlockingFunction(parameterValues: Map<KParameter, Any?>): Any? = try {
+        fn.callBy(parameterValues)
+    } catch (_: Exception) { }
 }

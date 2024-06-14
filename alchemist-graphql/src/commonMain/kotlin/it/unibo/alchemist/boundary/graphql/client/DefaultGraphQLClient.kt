@@ -17,6 +17,8 @@ import com.apollographql.apollo3.api.Subscription
 import com.apollographql.apollo3.network.ws.GraphQLWsProtocol
 import com.apollographql.apollo3.network.ws.WebSocketNetworkTransport
 import it.unibo.alchemist.boundary.graphql.utils.DefaultGraphQLSettings
+import kotlinx.coroutines.delay
+import kotlin.math.pow
 
 /**
  * Default GraphQL client implementation.
@@ -34,6 +36,11 @@ data class DefaultGraphQLClient(
     private val client: ApolloClient = ApolloClient.Builder()
         .serverUrl(serverUrl())
         .apply {
+            webSocketReopenWhen { e, attempt ->
+                delay(2.0.pow(attempt.toDouble()).toLong())
+                // retry after the delay
+                true
+            }
             if (enableSubscription) {
                 subscriptionNetworkTransport(
                     WebSocketNetworkTransport.Builder()
