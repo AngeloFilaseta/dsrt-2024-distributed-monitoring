@@ -14,6 +14,9 @@ import com.expediagroup.graphql.generator.execution.SimpleKotlinDataFetcherFacto
 import com.expediagroup.graphql.generator.hooks.FlowSubscriptionSchemaGeneratorHooks
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
 import com.expediagroup.graphql.server.ktor.GraphQL
+import graphql.execution.DataFetcherExceptionHandler
+import graphql.execution.DataFetcherExceptionHandlerParameters
+import graphql.execution.DataFetcherExceptionHandlerResult
 import graphql.schema.DataFetcherFactory
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.jackson.JacksonWebsocketContentConverter
@@ -29,6 +32,7 @@ import it.unibo.alchemist.boundary.graphql.schema.operations.queries.NodeQueries
 import it.unibo.alchemist.boundary.graphql.schema.operations.subscriptions.EnvironmentSubscriptions
 import it.unibo.alchemist.boundary.graphql.schema.operations.subscriptions.NodeSubscriptions
 import it.unibo.alchemist.model.Environment
+import java.util.concurrent.CompletableFuture
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
@@ -81,6 +85,9 @@ fun Application.graphQLModule(environment: Environment<*, *>) {
             contextFactory = DefaultKtorGraphQLContextFactory()
         }
         engine {
+            exceptionHandler = DataFetcherExceptionHandler {
+                CompletableFuture.completedFuture(DataFetcherExceptionHandlerResult.newResult().build())
+            }
             dataFetcherFactoryProvider = CustomDataFetcherFactoryProvider()
         }
     }
@@ -100,7 +107,22 @@ private class CustomFunctionFetcher(
     target: Any?,
     private val fn: KFunction<*>,
 ) : FunctionDataFetcher(target, fn) {
-    override fun runBlockingFunction(parameterValues: Map<KParameter, Any?>): Any? = try {
-        fn.callBy(parameterValues)
-    } catch (_: Exception) { }
+    override fun runBlockingFunction(parameterValues: Map<KParameter, Any?>): Any? = retryTillNoException(
+        parameterValues
+    )
+
+    private fun retryTillNoException(parameterValues: Map<KParameter, Any?>): Any? {
+        var exCaught: Boolean
+        var toReturn: Any? = null
+        do {
+            try {
+                toReturn = fn.callBy(parameterValues)
+                exCaught = false
+            } catch (e: Exception) {
+                exCaught = true
+            }
+
+        } while (exCaught)
+        return toReturn
+    }
 }
