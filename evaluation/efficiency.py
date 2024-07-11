@@ -10,10 +10,6 @@ import sys
 
 pattern = (r'#\s*seed\s*=\s*([0-9]*\.?[0-9]+),\s*frequency\s*=\s*([0-9]*\.?[0-9]+),\s*artificialSlowDown\s*=\s*(['
            r'0-9]*\.?[0-9]+)')
-
-plt.rc('text.latex', preamble=r'\usepackage{amsmath,amssymb,amsfonts,amssymb,graphicx}')
-plt.rcParams.update({"text.usetex": True})
-
 # Function to find and extract values from the variables
 def extract_numbers_from_line(line):
     match = re.search(pattern, line)
@@ -82,6 +78,20 @@ rows = (num_plots // cols) + (num_plots % cols > 0)
 # Order Unique Slowdowns
 unique_slowdowns.sort()
 
+
+plt.rc('text.latex', preamble=r'\usepackage{amsmath,amssymb,amsfonts,amssymb,graphicx}')
+
+params = {"ytick.color" : "black",
+          "xtick.color" : "black",
+          "axes.labelcolor" : "black",
+          "text.usetex" : True,
+          "font.family" : "serif",
+          "font.size" : 18,
+          "font.serif" : ["Computer Modern Serif"]}
+
+plt.rcParams.update(params)
+
+
 # Create subplots
 fig, axes = plt.subplots(rows, cols, figsize=(20, 4 * rows), sharex=True, sharey=False)
 
@@ -105,28 +115,36 @@ for ax, slowdown in zip(axes, unique_slowdowns):
     ax.patch.set_visible(False)
     ax2.patch.set_visible(True)
     ax.xaxis.set_major_formatter(ScalarFormatter())
-    ax.set_title(r'\textit{Event Time Execution} = ' + str(int(slowdown)) + 'ms')
-    ax.set_ylabel(r'\textit{Lost Updates (\%)}')
-    ax.set_ylim(-0.5, 100.5)
+    ax.set_title(r'\textit{Event Time Execution} = ' + str(int(slowdown)) + 'ms', fontsize=16)
+    ax.set_ylabel(r'\textit{Lost Updates (\%)}', fontsize=18)
+    ax.set_ylim(-1, 100.5)
     ax.set_xlim(0, data["frequency_kHz"].max())
-    ax2.set_ylim(-0.5, data["up_norm"].max())
-    ax2.set_ylabel(r'\textit{Useless Polling (\%)}')
+    ax2.set_ylim(-1, data["up_norm"].max())
+    ax2.set_ylabel(r'\textit{Useless Polling (\%)}', fontsize=18)
     ax.yaxis.set_major_formatter(ticker.FuncFormatter(custom_formatter))
     ax2.yaxis.set_major_formatter(ticker.FuncFormatter(custom_formatter))
-    ax.set_xlabel(r'\textit{Frequency} (kHz)')
+    ax.set_xlabel(r'\textit{Frequency} (kHz)', fontsize=18)
     custom_lines = [
         plt.Line2D([0], [0], color="#B8DE29", lw=3),
         plt.Line2D([0], [0], color="#482677", lw=3),
     ]
-    ax2.legend(custom_lines, ["Lost Updates", "Useless Polling"], loc="center right")
+    if(slowdown==0):
+        ax.legend(custom_lines, ["Lost Updates", "Useless Polling"], loc="center right", fontsize=18)
+    elif (slowdown==1):
+        ax.legend(custom_lines, ["Lost Updates", "Useless Polling"], loc="upper right", fontsize=18)
+    else:
+        ax.legend(custom_lines, ["Lost Updates", "Useless Polling"], loc=(0.1, 0.6), fontsize=18)
 
+    ax.yaxis.set_tick_params(labelsize=18)
+    ax2.yaxis.set_tick_params(labelsize=18)
+    ax.xaxis.set_tick_params(labelsize=18)
 # Remove empty subplots
 for i in range(num_plots, len(axes)):
     fig.delaxes(axes[i])
 
-plt.tight_layout(rect=(0.0, 0.0, 1.0, 0.95))
-fig.suptitle(r'\textit{Lost Updates} and \textit{Useless Polling} with different \textit{Event Time Execution}', fontsize=16)
-
+plt.tight_layout(rect=(0.0, 0.0, 1.0, 0.90))
+fig.suptitle(r'\textit{Lost Updates} and \textit{Useless Polling} with different \textit{Event Time Execution}', fontsize=24)
+plt.rcParams.update({"text.usetex": True})
 # Save and show
 plt.savefig("efficiency.pdf")
 plt.show()

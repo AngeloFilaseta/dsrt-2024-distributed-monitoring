@@ -15,7 +15,6 @@ import com.expediagroup.graphql.generator.hooks.FlowSubscriptionSchemaGeneratorH
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
 import com.expediagroup.graphql.server.ktor.GraphQL
 import graphql.execution.DataFetcherExceptionHandler
-import graphql.execution.DataFetcherExceptionHandlerParameters
 import graphql.execution.DataFetcherExceptionHandlerResult
 import graphql.schema.DataFetcherFactory
 import io.ktor.http.HttpMethod
@@ -108,7 +107,7 @@ private class CustomFunctionFetcher(
     private val fn: KFunction<*>,
 ) : FunctionDataFetcher(target, fn) {
     override fun runBlockingFunction(parameterValues: Map<KParameter, Any?>): Any? = retryTillNoException(
-        parameterValues
+        parameterValues,
     )
 
     private fun retryTillNoException(parameterValues: Map<KParameter, Any?>): Any? {
@@ -121,7 +120,6 @@ private class CustomFunctionFetcher(
             } catch (e: Exception) {
                 exCaught = true
             }
-
         } while (exCaught)
         return toReturn
     }
